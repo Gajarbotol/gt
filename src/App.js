@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import './App.css';
 
 const socket = io('http://localhost:3000');
 
@@ -46,39 +47,44 @@ function App() {
       const { token } = await response.json();
       localStorage.setItem('token', token);
       alert('User logged in');
+      setUser(true); // Simulate a logged-in user
     } else {
       alert('Invalid credentials');
     }
   };
 
   return (
-    <div>
+    <div className="app">
       {!user ? (
-        <div>
-          <h2>Login</h2>
-          <form onSubmit={login}>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-            <button type="submit">Login</button>
-          </form>
-          <h2>Register</h2>
-          <form onSubmit={register}>
-            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-            <button type="submit">Register</button>
-          </form>
+        <div className="auth-container">
+          <div className="form-container">
+            <h2>Login</h2>
+            <form onSubmit={login}>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+              <button type="submit">Login</button>
+            </form>
+          </div>
+          <div className="form-container">
+            <h2>Register</h2>
+            <form onSubmit={register}>
+              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+              <button type="submit">Register</button>
+            </form>
+          </div>
         </div>
       ) : (
-        <div>
-          <ul>
+        <div className="chat-container">
+          <ul className="messages">
             {messages.map((msg, index) => (
-              <li key={index}>{msg}</li>
+              <li key={index} className="message">{msg}</li>
             ))}
           </ul>
-          <form onSubmit={sendMessage}>
-            <input value={message} onChange={(e) => setMessage(e.target.value)} />
-            <button type="submit">Send</button>
+          <form className="input-form" onSubmit={sendMessage}>
+            <input className="input" value={message} onChange={(e) => setMessage(e.target.value)} />
+            <button className="send-button" type="submit">Send</button>
           </form>
         </div>
       )}
